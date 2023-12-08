@@ -1,6 +1,6 @@
 # utils.py: Utility file for implementing helpful utility functions used by the ML algorithms.
 #
-# Submitted by: [enter your full name here] -- [enter your IU username here]
+# Submitted by: ISHIKA THAKUR(isthakur) PRITHVI AMIN(aminpri) RADHIKA GANESH(rganesh)
 #
 # Based on skeleton code by CSCI-B 551 Fall 2023 Course Staff
 
@@ -16,7 +16,9 @@ def euclidean_distance(x1, x2):
         x2: A numpy array of shape (n_features,).
     """
 
-    raise NotImplementedError('This function must be implemented by the student.')
+    eucli_dist = np.sqrt(np.sum((x1 - x2)**2))
+    return eucli_dist
+    #raise NotImplementedError('This function must be implemented by the student.')
 
 
 def manhattan_distance(x1, x2):
@@ -27,8 +29,9 @@ def manhattan_distance(x1, x2):
         x1: A numpy array of shape (n_features,).
         x2: A numpy array of shape (n_features,).
     """
-
-    raise NotImplementedError('This function must be implemented by the student.')
+    man_dist = np.sum(np.abs(x1 - x2))
+    return man_dist
+    #raise NotImplementedError('This function must be implemented by the student.')
 
 
 def identity(x, derivative = False):
@@ -41,7 +44,8 @@ def identity(x, derivative = False):
         derivative: A boolean representing whether or not the derivative of the function should be returned instead.
     """
 
-    raise NotImplementedError('This function must be implemented by the student.')
+    return np.ones_like(x) if derivative else x
+    #raise NotImplementedError('This function must be implemented by the student.')
 
 
 def sigmoid(x, derivative = False):
@@ -54,7 +58,11 @@ def sigmoid(x, derivative = False):
         derivative: A boolean representing whether or not the derivative of the function should be returned instead.
     """
 
-    raise NotImplementedError('This function must be implemented by the student.')
+    sigmoid = 1 / (1 + np.exp(-x))
+    if derivative:
+        return sigmoid * (1 - sigmoid)
+    return sigmoid
+    #raise NotImplementedError('This function must be implemented by the student.')
 
 
 def tanh(x, derivative = False):
@@ -67,7 +75,11 @@ def tanh(x, derivative = False):
         derivative: A boolean representing whether or not the derivative of the function should be returned instead.
     """
 
-    raise NotImplementedError('This function must be implemented by the student.')
+    if derivative:
+        return 1.0 - np.tanh(x)**2
+    else:
+        return np.tanh(x)
+    #raise NotImplementedError('This function must be implemented by the student.')
 
 
 def relu(x, derivative = False):
@@ -80,7 +92,11 @@ def relu(x, derivative = False):
         derivative: A boolean representing whether or not the derivative of the function should be returned instead.
     """
 
-    raise NotImplementedError('This function must be implemented by the student.')
+    if derivative:
+        return np.where(x > 0, 1, 0)
+    else:
+        return np.maximum(0, x)
+    #raise NotImplementedError('This function must be implemented by the student.')
 
 
 def softmax(x, derivative = False):
@@ -106,7 +122,11 @@ def cross_entropy(y, p):
             output activation function.
     """
 
-    raise NotImplementedError('This function must be implemented by the student.')
+    epsilon = 1e-15  
+    p = np.clip(p, epsilon, 1 - epsilon)
+    cross_entropy = -np.sum(y * np.log(p)) / len(y)
+    return cross_entropy
+    #raise NotImplementedError('This function must be implemented by the student.')
 
 
 def one_hot_encoding(y):
@@ -123,4 +143,9 @@ def one_hot_encoding(y):
         data. n_outputs is equal to the number of unique categorical class values in the numpy array y.
     """
 
-    raise NotImplementedError('This function must be implemented by the student.')
+    unique_values = np.unique(y)
+    one_hot_encoding = np.zeros((len(y), len(unique_values)))
+    for i, val in enumerate(unique_values):
+        one_hot_encoding[:, i] = (y == val).astype(int)
+    return one_hot_encoding
+    #raise NotImplementedError('This function must be implemented by the student.')
