@@ -1,6 +1,6 @@
 # multilayer_perceptron.py: Machine learning implementation of a Multilayer Perceptron classifier from scratch.
 #
-# Submitted by: [enter your full name here] -- [enter your IU username here]
+# Submitted by: ISHIKA THAKUR(isthakur) PRITHVI AMIN(aminpri) RADHIKA GANESH(rganesh)
 #
 # Based on skeleton code by CSCI-B 551 Fall 2023 Course Staff
 
@@ -119,8 +119,14 @@ class MultilayerPerceptron:
         self._y = one_hot_encoding(y)
 
         np.random.seed(42)
+        #initialization
+        self._h_weights = np.random.rand(self._X.shape[1],self.n_hidden)    
+        self._h_bias = np.zeros((1, self.n_hidden))    
+        self._o_weights = np.random.rand(self.n_hidden, self._y.shape[1])    
+        self._o_bias = np.zeros((1, self._y.shape[1]))    
 
-        raise NotImplementedError('This function must be implemented by the student.')
+        #raise NotImplementedError('This function must be implemented by the student.')
+
 
     def fit(self, X, y):
         """
@@ -137,7 +143,16 @@ class MultilayerPerceptron:
 
         self._initialize(X, y)
 
-        raise NotImplementedError('This function must be implemented by the student.')
+        for i in range(0, self.n_iterations, 20):
+          #Forward pass
+          h_activation, o_activation = self.hidden_activation(np.dot(self._X, self._h_weights)), self._output_activation(np.dot(self.hidden_activation(np.dot(self._X, self._h_weights)), self._o_weights) + self._o_bias)
+          #Compute and store loss
+          self._loss_history.append(self._loss_function(self._y, o_activation))
+          #Update weights
+          self._o_weights = self._o_weights-(self.learning_rate * np.dot(h_activation.T, o_activation - self._y))
+          self._h_weights = self._h_weights-(self.learning_rate * np.dot(self._X.T, np.dot(self._o_weights, (o_activation - self._y).T).T * self.hidden_activation(np.dot(self._X, self._h_weights), derivative=True)))
+
+        #raise NotImplementedError('This function must be implemented by the student.')
 
     def predict(self, X):
         """
@@ -149,5 +164,8 @@ class MultilayerPerceptron:
         Returns:
             A numpy array of shape (n_samples,) representing the predicted target class values for the given test data.
         """
+        prediction=[]
+        prediction = [np.argmax(self._output_activation(np.dot(self.hidden_activation(np.dot(X[i, np.newaxis], self._h_weights)), self._o_weights))) for i in range(X.shape[0])]
 
-        raise NotImplementedError('This function must be implemented by the student.')
+        #raise NotImplementedError('This function must be implemented by the student.')
+        return np.array(prediction)
