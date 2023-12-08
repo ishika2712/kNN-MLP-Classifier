@@ -1,6 +1,6 @@
 # k_nearest_neighbors.py: Machine learning implementation of a K-Nearest Neighbors classifier from scratch.
 #
-# Submitted by: [enter your full name here] -- [enter your IU username here]
+# Submitted by: ISHIKA THAKUR(isthakur) PRITHVI AMIN(aminpri) RADHIKA GANESH(rganesh)
 #
 # Based on skeleton code by CSCI-B 551 Fall 2023 Course Staff
 
@@ -65,8 +65,11 @@ class KNearestNeighbors:
         Returns:
             None.
         """
+        # Store the input data and corresponding class labels in the model attributes
+        self._X = X
+        self._y = y
 
-        raise NotImplementedError('This function must be implemented by the student.')
+        #raise NotImplementedError('This function must be implemented by the student.')
 
     def predict(self, X):
         """
@@ -79,4 +82,22 @@ class KNearestNeighbors:
             A numpy array of shape (n_samples,) representing the predicted target class values for the given test data.
         """
 
-        raise NotImplementedError('This function must be implemented by the student.')
+        # Initialize an empty list to store predictions for each test sample
+        predictions = []
+
+        for sample in X:
+          # Calculate distances and retrieve the corresponding class labels for each training sample
+          neighbors = sorted([(self._distance(self._X[i], sample), self._y[i]) for i in range(len(self._X))])[:self.n_neighbors]
+
+          # Calculate weights
+          weights = [1.0] * self.n_neighbors if self.weights == 'uniform' else [1 / (d + 0.1) for d, _ in neighbors]
+
+          # Calculate weighted occurrences of each class among the neighbors
+          occurrences = [sum(w * (neighbour_class == c) for w, (_, neighbour_class) in zip(weights, neighbors)) for c in set(self._y)]
+
+          # Append the predicted class for the current test sample to the predictions list
+          predictions.append(occurrences.index(max(occurrences)))
+
+        result = np.array(predictions)
+        return result
+      #raise NotImplementedError('This function must be implemented by the student.')
