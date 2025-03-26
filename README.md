@@ -1,6 +1,5 @@
-# aminpri-isthakur-rganesh-a4
 
-Part 1: K-Nearest Neighbors Classification 
+## Part 1: K-Nearest Neighbors Classification 
 
 Problem Formulation:
 
@@ -16,7 +15,7 @@ The fit method trains the model with input data and true class labels.
 The predict method uses the fitted model to predict class labels for a given test dataset. It calculates distances between samples, considers neighbors based on the specified parameters, assigns weights, and predicts the class with the highest weighted occurrences among neighbors. The code utilizes Euclidean or Manhattan distance functions from utils.py
 
 
-Part 2: Multilayer Perceptron Classification 
+## Part 2: Multilayer Perceptron Classification 
 
 Problem Formulation:
 
